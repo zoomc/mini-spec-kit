@@ -1,8 +1,8 @@
 # Example Module Complement
 
-## 闭环流程
+## Closed-Loop Workflow
 
-本模块必须遵循：
+This module must follow:
 
 ```text
 Spec → Plan → Checklist → Align → Implement → Test
@@ -10,42 +10,42 @@ Spec → Plan → Checklist → Align → Implement → Test
 
 ## Spec
 
-- 明确模块式样、职责、边界和不做什么。
-- 如果用户需求与模块边界冲突，先更新规格或请求确认。
-- 规格未明确前，不允许进入实现。
+- Clarify the module's pattern, responsibilities, boundaries, and non-goals.
+- If user requirements conflict with module boundaries, update the spec or request confirmation first.
+- Do not enter implementation until the spec is clear.
 
 ## Plan
 
-- 把实现拆成可执行、可验证、最小范围的步骤。
-- 计划必须说明会触碰哪些文件或能力边界。
-- 计划与规格不一致时，先修改计划或规格。
+- Break implementation into executable, verifiable, minimally scoped steps.
+- The plan must state which files or capability boundaries will be touched.
+- If the plan conflicts with the spec, fix the plan or spec first.
 
 ## Checklist
 
-- 检查清单必须覆盖关键功能点、边界条件和失败路径。
-- 检查清单必须能验证计划中的关键步骤。
-- 检查清单缺失时，先补齐清单。
+- The checklist must cover critical functionality, boundary conditions, and failure paths.
+- The checklist must be able to verify the key steps in the plan.
+- If the checklist is missing, fill it in first.
 
 ## Align
 
-- 检查 `spec.md`、`plan.md`、`checklist.md` 是否互相一致。
-- 若发现不一致，只允许修改规格、计划或检查清单。
-- Align 阶段 **不写代码**，不改实现文件，不运行无关重构。
-- 对齐完成后，在执行说明中明确：规格、计划、检查清单已一致。
+- Check whether `spec.md`, `plan.md`, `checklist.md` are mutually consistent.
+- If inconsistencies are found, only the spec, plan, or checklist may be modified.
+- During Align: **no code**, no implementation file changes, no unrelated refactoring.
+- After alignment is complete, state explicitly in the execution notes: spec, plan, and checklist are consistent.
 
 ## Implement
 
-- 只有 Align 完成后，才允许修改代码。
-- 严格按 `plan.md` 的最小范围实现。
-- 不实现 `spec.md` 明确排除的内容。
-- 发现新增冲突时，停止实现并回到 Align。
+- Code may only be modified after Align is complete.
+- Implement strictly within the minimal scope defined in `plan.md`.
+- Do not implement anything explicitly excluded by `spec.md`.
+- If new conflicts are discovered, stop implementation and return to Align.
 
 ## Test
 
-- 按 `checklist.md` 做最小相关验证。
-- 区分代码失败、环境失败、权限失败和外部服务失败。
-- 最终报告必须列出变更文件、验证命令、结果和未完成风险。
+- Perform minimal relevant verification per `checklist.md`.
+- Distinguish between code failures, environment failures, permission failures, and external service failures.
+- The final report must list changed files, verification commands, results, and remaining risks.
 
-## 核心原则
+## Core Principle
 
-**不对齐，不写代码。**
+**No alignment, no code.**

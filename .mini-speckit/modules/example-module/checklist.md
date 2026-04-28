@@ -1,20 +1,20 @@
 # Example Module Checklist
 
-## 关键功能点
+## Critical Functionality
 
-- [ ] 输入符合规格时，模块返回预期输出。
-- [ ] 输入缺失、非法或越界时，模块返回明确错误。
-- [ ] 模块不访问其他模块私有实现。
-- [ ] 模块对外接口保持向后兼容，除非规格显式声明破坏性变更。
+- [ ] When input matches the spec, the module returns the expected output.
+- [ ] When input is missing, invalid, or out of bounds, the module returns a clear error.
+- [ ] The module does not access other modules' private implementations.
+- [ ] The module's external API maintains backward compatibility unless the spec explicitly states a breaking change.
 
-## 边界条件
+## Boundary Conditions
 
-- [ ] 空输入、最小输入、最大输入行为明确。
-- [ ] 重复调用或并发调用不会破坏状态一致性。
-- [ ] 外部依赖失败时有可追踪的错误路径。
+- [ ] Empty input, minimum input, and maximum input behaviors are well-defined.
+- [ ] Repeated or concurrent calls do not break state consistency.
+- [ ] External dependency failures have traceable error paths.
 
-## 验证要求
+## Verification Requirements
 
-- [ ] 优先运行与本模块直接相关的测试。
-- [ ] 无相关测试时，执行可行的最小构建、类型检查或手工验证。
-- [ ] 最终报告列出已验证项、未验证项和阻塞原因。
+- [ ] Prioritize running tests directly related to this module.
+- [ ] When no related tests exist, perform the minimum viable build, type check, or manual verification.
+- [ ] The final report lists verified items, unverified items, and blocking reasons.

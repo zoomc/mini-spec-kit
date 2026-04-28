@@ -1,26 +1,26 @@
 # Example Module Spec
 
-## 式样
+## Pattern
 
-示例模块展示每个业务模块应如何描述规格、职责、边界和非目标。实际项目复制模板后，应把 `example-module` 改名为真实模块名。
+The example module demonstrates how each business module should describe its spec, responsibilities, boundaries, and non-goals. After copying the template to an actual project, rename `example-module` to the real module name.
 
-## 职责
+## Responsibilities
 
-- 说明模块要解决的核心问题。
-- 定义模块输入、输出、状态和错误路径。
-- 标明模块依赖的外部接口或内部共享能力。
-- 约束模块对外暴露的 API 或交互方式。
+- Describe the core problem the module solves.
+- Define module inputs, outputs, state, and error paths.
+- List external interfaces or shared capabilities the module depends on.
+- Constrain the APIs or interaction patterns the module exposes externally.
 
-## 边界
+## Boundaries
 
-- 模块内部实现只由本模块维护。
-- 跨模块调用必须通过公开接口或约定的数据结构。
-- 共享逻辑必须上移到共享层，不能在多个模块重复实现。
-- 模块测试应围绕关键功能、边界条件和失败路径。
+- Module internal implementation is maintained only by this module.
+- Cross-module calls must go through public interfaces or agreed-upon data structures.
+- Shared logic must be lifted to a shared layer — no duplicate implementation across modules.
+- Module tests should focus on critical functionality, boundary conditions, and failure paths.
 
-## 不做什么
+## Non-Goals
 
-- 不承担其他模块的数据持久化职责。
-- 不直接访问其他模块内部文件或私有状态。
-- 不引入与当前目标无关的框架、服务或构建工具。
-- 不为临时需求破坏项目级架构约束。
+- Does not take on data persistence responsibilities of other modules.
+- Does not directly access other modules' internal files or private state.
+- Does not introduce frameworks, services, or build tools unrelated to the current goal.
+- Does not break project-level architecture constraints for temporary requirements.

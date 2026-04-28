@@ -1,18 +1,18 @@
 # Project Spec
 
-## 项目目标
+## Project Goal
 
-`mini-speckit` 提供一个可复制到任意项目的极简 AI Coding 规范骨架，使 Hermes、Codex 或其他执行器在写代码前先完成规格对齐，降低上下文漂移、越界修改和直接开写风险。
+`mini-speckit` provides a minimal, copyable AI coding spec skeleton for any project, enabling Hermes, Codex, or other executors to complete spec alignment before writing code — reducing context drift, scope creep, and premature implementation risks.
 
-## 模块划分
+## Module Breakdown
 
-- `project-constraints`：项目级入口，定义 AI 行为、禁止项、架构约束和 token 策略。
-- `project-spec`：项目目标、模块关系、数据流和目录结构说明。
-- `modules/<module>`：模块级规格、计划、检查清单和闭环流程。
-- `copilot-instructions`：让 GitHub Copilot 等工具优先遵守 `.mini-speckit/` 约束。
-- `init-script`：把模板复制到实际项目根目录。
+- `project-constraints`: Project-level entry point defining AI behavior, forbidden actions, architecture constraints, and token strategy.
+- `project-spec`: Project goals, module relationships, data flow, and directory structure.
+- `modules/<module>`: Module-level specs, plans, checklists, and closed-loop workflow.
+- `copilot-instructions`: Makes GitHub Copilot and similar tools respect `.mini-speckit/` constraints first.
+- `init-script`: Copies the template into the actual project root.
 
-## 数据流
+## Data Flow
 
 ```text
 User Task
@@ -34,7 +34,7 @@ Test by checklist
 Report result and gaps
 ```
 
-## 目录结构
+## Directory Structure
 
 ```text
 .mini-speckit/
@@ -52,8 +52,8 @@ scripts/
   init-mini-speckit.sh
 ```
 
-## 使用边界
+## Usage Boundaries
 
-- 本项目不是官方 Spec Kit 的替代 CLI。
-- 本项目不提供代码生成器、模板渲染器或 Agent 编排器。
-- 本项目只定义最小规范文件和闭环执行规则。
+- This project is not a replacement CLI for the official Spec Kit.
+- This project does not provide code generators, template renderers, or agent orchestrators.
+- This project only defines minimum spec files and closed-loop execution rules.

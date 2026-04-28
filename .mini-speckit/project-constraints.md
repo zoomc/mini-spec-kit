@@ -1,41 +1,41 @@
 # Project Constraints
 
-> **唯一入口**：任何 AI Coding 执行器在修改代码前，必须优先读取本文件，再读取 `project-spec.md` 和目标模块的 `complement.md`。
+> **Single entry point**: Any AI coding executor must read this file first before modifying code, then read `project-spec.md` and the target module's `complement.md`.
 
-## AI Coding 行为规则
+## AI Coding Behavior Rules
 
-- 先理解约束、目标、模块边界，再提出或更新实现计划。
-- 非平凡改动必须遵循目标模块的 `Spec → Plan → Checklist → Align → Implement → Test` 流程。
-- 所有关键需求、取舍、边界和验证点必须落到文件，不依赖聊天上下文。
-- 修改范围必须最小化，只处理当前任务相关文件。
-- 遇到规格不清、计划冲突、检查点缺失时，先补齐文档，不直接写代码。
+- Understand constraints, goals, and module boundaries before proposing or updating an implementation plan.
+- Non-trivial changes must follow the target module's `Spec → Plan → Checklist → Align → Implement → Test` workflow.
+- All key requirements, trade-offs, boundaries, and verification points must be written to files — no reliance on chat context.
+- Scope of changes must be minimized; only touch files relevant to the current task.
+- When specs are unclear, plans conflict, or checkpoints are missing, fill in the docs first — do not jump to code.
 
-## 禁止行为
+## Forbidden Actions
 
-- 禁止跳过 `project-constraints.md` 直接修改代码。
-- 禁止在 `spec.md`、`plan.md`、`checklist.md` 未对齐时实现代码。
-- 禁止为了通过测试而删除关键约束、弱化边界或绕开需求。
-- 禁止扩大任务范围、重写无关模块、顺手重构无关代码。
-- 禁止把环境、权限、外部服务问题误判为代码问题。
+- Do not skip `project-constraints.md` and modify code directly.
+- Do not implement code when `spec.md`, `plan.md`, `checklist.md` are not aligned.
+- Do not delete key constraints, weaken boundaries, or bypass requirements to pass tests.
+- Do not expand task scope, rewrite unrelated modules, or refactor unrelated code opportunistically.
+- Do not misclassify environment, permission, or external service issues as code bugs.
 
-## 架构约束
+## Architecture Constraints
 
-- 项目必须保持清晰模块边界：模块只暴露必要接口，不跨层访问内部实现。
-- 数据流必须可追踪：输入、处理、输出、错误路径应能在 `project-spec.md` 或模块规格中定位。
-- 公共能力优先沉淀为共享模块；业务模块不得复制粘贴复杂逻辑。
-- 默认保持向后兼容；破坏性变更必须在规格和计划中显式说明。
-- 测试策略应覆盖关键路径、边界条件和失败路径，不追求无关的大而全验证。
+- The project must maintain clear module boundaries: modules expose only necessary interfaces and do not cross-layer access internal implementations.
+- Data flow must be traceable: input, processing, output, and error paths should be locatable in `project-spec.md` or module specs.
+- Shared capabilities should be consolidated into shared modules; business modules must not copy-paste complex logic.
+- Maintain backward compatibility by default; breaking changes must be explicitly stated in specs and plans.
+- Test strategy should cover critical paths, boundary conditions, and failure paths — do not pursue irrelevant comprehensive validation.
 
-## Token 优化策略
+## Token Optimization Strategy
 
-- 优先读取本文件、`project-spec.md`、目标模块文件，再按需读取代码。
-- 使用文件路径和符号名定位上下文，避免全仓扫描。
-- 先读小范围，再扩展上下文；只有证据不足时才继续搜索。
-- 输出计划和报告保持短句，避免复制大段源码或日志。
-- 把可复用结论写回模块文档，减少后续重复解释。
+- Read this file, `project-spec.md`, and target module files first, then read code on demand.
+- Use file paths and symbol names to locate context; avoid full-repo scanning.
+- Read small scopes first, then expand context; only search further when evidence is insufficient.
+- Keep plans and reports in short sentences; avoid copying large blocks of source code or logs.
+- Write reusable conclusions back to module docs to reduce future repeated explanations.
 
-## 执行门槛
+## Execution Thresholds
 
-- 未完成 Align：只允许修改 `spec.md`、`plan.md`、`checklist.md`、`complement.md` 等规范文件。
-- Align 完成后：才允许进入 Implement，且必须按 `plan.md` 最小范围执行。
-- Implement 完成后：必须按 `checklist.md` 做最小相关验证，并明确未验证项。
+- Before Align: only allowed to modify `spec.md`, `plan.md`, `checklist.md`, `complement.md` and other spec files.
+- After Align: allowed to enter Implement, and must execute with minimal scope per `plan.md`.
+- After Implement: must run minimal relevant verification per `checklist.md` and explicitly list unverified items.
