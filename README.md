@@ -1,85 +1,144 @@
 # mini-speckit
 
-`mini-speckit` is a minimal, copyable Spec-Driven Development base template.
+**Stop letting AI agents write code without a plan.**
 
-It does not copy the official Spec Kit implementation — only the core idea: align constraints, specs, plans, and checklists before letting AI coding tools enter the implementation phase.
+`mini-spec` is a lightweight Spec-Driven Development framework that forces AI coding agents to think before they code. It's the minimum viable process that prevents AI from going off-track, introducing bugs, or building the wrong thing.
 
-## Core Principles
+## The Problem
 
-- **Spec is the source of truth**: Code serves specs, not the other way around.
-- **Artifact-driven flow**: Each phase produces artifacts that the next phase reads. No artifact → next phase cannot start.
-- **No pre-checked checklists**: All checklist items start as `[ ]`. Implementation and verification are separate steps.
-- **Change traceability**: Every change is recorded in `changelog.md` with requirement IDs.
-- **Reconcile is mandatory**: After implementation, spec files must be updated to match the actual code.
+AI coding agents are powerful but impatient. Give them a task, and they'll start writing code immediately — often before understanding what you actually want. The result?
 
-## Workflow
+- ❌ Code that doesn't match your requirements
+- ❌ Endless back-and-forth fixing issues that shouldn't have existed
+- ❌ No documentation of what was built or why
+- ❌ Scope creep and feature drift
 
-```text
+## The Solution
+
+`mini-spec` enforces a simple 6-phase workflow:
+
+```
 Specify → Plan → Write Checklist → Analyze → Implement → Reconcile
 ```
 
-| Phase | What | Output |
-|-------|------|--------|
-| **Specify** | Update `spec.md` with requirements | `spec.md` with requirement IDs |
-| **Plan** | Write implementation plan + task list | `plan.md` with `## Task List` |
-| **Write Checklist** | Create verification items with commands | `checklist.md` with `[ ]` items |
-| **Analyze** | Consistency check (spec/plan/checklist) | `plan.md` with `## Analysis Report` |
-| **Implement** | Code changes per plan | Code + build/test pass |
-| **Reconcile** | Verify checklist + update spec | `checklist.md` `[x]` + `changelog.md` |
+**Before any code is written**, the agent must:
+1. ✅ Define requirements with traceable IDs
+2. ✅ Create an implementation plan
+3. ✅ Write verification checklists
+4. ✅ Analyze for consistency and gaps
+5. ✅ Only THEN write code
+6. ✅ Verify and update specs to match reality
 
-## Phase Gates
+**The spec document is the source of truth. Code serves specs.**
 
-| Gate | Check | Fail Action |
-|------|-------|-------------|
-| Specify → Plan | `spec.md` has `## Requirements` | Stop, complete spec |
-| Plan → Checklist | `plan.md` has `## Task List` | Stop, complete plan |
-| Checklist → Analyze | No `[x]` in checklist, all have verification commands | Stop, fix checklist |
-| Analyze → Implement | `## Analysis Report` with no CRITICAL issues | Stop, fix inconsistencies |
-| Implement → Reconcile | Build/test passes | Stop, fix code |
-| Reconcile → Done | All `[x]`, spec matches code | Stop, complete reconciliation |
+## Why It Works
 
-## Initialize into Another Project
+| Principle | Benefit |
+|-----------|---------|
+| **Spec is king** | Code implements the spec, not the other way around |
+| **Artifact gates** | Each phase produces files the next phase requires — skip a phase and you can't proceed |
+| **No pre-checked boxes** | Every verification starts as `[ ]`, forcing actual testing |
+| **Change tracking** | Every modification is logged with requirement IDs |
+| **Reconcile mandate** | After coding, specs must be updated to reflect reality |
 
-```bash
-./scripts/init-mini-speckit.sh /absolute/path/to/target-project
+## 6-Phase Workflow
+
+| Phase | What Happens | Output |
+|-------|--------------|--------|
+| **1. Specify** | Define what to build with requirement IDs | `spec.md` with `<!-- REQ-XXX -->` markers |
+| **2. Plan** | Break down into tasks with dependencies | `plan.md` with `## Task List` |
+| **3. Checklist** | Create verification commands for each task | `checklist.md` with `[ ]` items |
+| **4. Analyze** | Read-only consistency check | `plan.md` with `## Analysis Report` |
+| **5. Implement** | Write code according to plan | Working code + passing tests |
+| **6. Reconcile** | Verify everything, update specs | `checklist.md` all `[x]` + `changelog.md` |
+
+## Phase Gates (Anti-Skip Mechanism)
+
+Each phase has a **physical gate** — a file check that must pass before the next phase can start:
+
+```
+Specify → [spec.md has ## Requirements?] → Plan
+Plan → [plan.md has ## Task List?] → Checklist
+Checklist → [checklist.md has [ ] items?] → Analyze
+Analyze → [plan.md has ## Analysis Report?] → Implement
+Implement → [Build/test passes?] → Reconcile
+Reconcile → [All [x], spec matches code?] → Done
 ```
 
-The script copies:
+**Skip a gate? The workflow stops.** No shortcuts, no "we'll fix it later."
 
-- `.mini-speckit/`
-- `.github/copilot-instructions.md`
+## Quick Start
+
+### Initialize in Your Project
+
+```bash
+git clone https://github.com/zoomc/mini-speckit.git
+cd mini-speckit
+./scripts/init-mini-speckit.sh /path/to/your/project
+```
+
+This copies the `.mini-speckit/` template into your project.
+
+### Use with AI Agents
+
+1. Your AI agent reads `.mini-speckit/project-constraints.md`
+2. Follows the 6-phase workflow for each task
+3. Produces traceable, verifiable results
 
 ## Directory Structure
 
-```text
-mini-speckit/
-  README.md
-  .gitignore
+```
+your-project/
   .mini-speckit/
-    project-constraints.md
-    project-spec.md
+    project-constraints.md    # Workflow rules and constraints
+    project-spec.md           # Project goals and data flow
     modules/
-      example-module/
-        spec.md          # Current requirements state
-        plan.md          # Implementation plan + Phase Status + Analysis Report
-        checklist.md     # Verification items with requirement IDs and commands
-        complement.md    # Module responsibilities and interfaces
-        changelog.md     # Change history
-  .github/
-    copilot-instructions.md
-  scripts/
-    init-mini-speckit.sh
+      <module-name>/
+        spec.md               # Current requirements (with REQ-XXX IDs)
+        plan.md               # Implementation plan + Analysis Report
+        checklist.md          # Verification items with commands
+        complement.md         # Module responsibilities
+        changelog.md          # Change history
 ```
 
-## Change Types
+## Change Management
 
 | Type | spec.md | changelog.md |
 |------|---------|-------------|
-| Bug Fix | No change (or add `## Known Issues`) | Record fix |
+| Bug Fix | No change (or `## Known Issues`) | Record fix |
 | Requirement Change | Mark `[CHANGED]` / `[DEPRECATED]` | Record change |
 | Enhancement | Add `[NEW]` section | Record addition |
 | Refactoring | No change (behavior preserved) | Record refactor |
 
-## Relationship with Official Spec Kit
+## Who Is This For?
 
-The official Spec Kit provides a full CLI, templates, scripts, and multi-agent workflows. This project keeps only the minimum portable idea: freeze constraints and workflow into project files so any AI coding executor completes spec alignment before writing code.
+- **AI coding agents** (Claude, GPT, Copilot, Cursor, etc.) — gives them a structured workflow to follow
+- **Developers using AI** — ensures AI output matches your requirements
+- **Teams** — creates documentation trail for every change
+- **Solo developers** — prevents your own scope creep
+
+## Real-World Example
+
+**Before mini-spec:**
+> "Hey AI, build a user authentication system"
+> → AI writes 500 lines of code
+> → You discover it doesn't handle password reset
+> → Back and forth for hours
+
+**With mini-spec:**
+> Phase 1: "Requirements: login, logout, password reset, email verification"
+> Phase 2: "Plan: 4 tasks, each ~100 lines, dependencies mapped"
+> Phase 3: "Checklist: 8 verification commands ready"
+> Phase 4: "Analysis: no gaps found"
+> Phase 5: "Implement: code matches plan exactly"
+> Phase 6: "Reconcile: all verified, specs updated"
+
+**Total time saved: hours of rework.**
+
+## License
+
+MIT
+
+## Credits
+
+Inspired by the official Spec Kit methodology. This is the minimal, portable version.
