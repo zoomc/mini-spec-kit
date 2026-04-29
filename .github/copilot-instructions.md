@@ -1,10 +1,10 @@
 # Copilot Instructions
 
-This project uses `.mini-speckit/` for spec-driven development. Before modifying code:
+This project uses `.mini-spec-kit/` for spec-driven development. Before modifying code:
 
-1. Read `.mini-speckit/project-constraints.md`
-2. Read `.mini-speckit/project-spec.md`
-3. Read the target module's files in `.mini-speckit/modules/<module>/`
+1. Read `.mini-spec-kit/project-constraints.md`
+2. Read `.mini-spec-kit/project-spec.md`
+3. Read the target module's files in `.mini-spec-kit/modules/<module>/`
 
 ## Workflow
 

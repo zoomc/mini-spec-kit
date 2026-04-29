@@ -16,8 +16,8 @@ if [ ! -d "$TARGET_DIR" ]; then
 fi
 
 mkdir -p "$TARGET_DIR/.github"
-cp -R "$TEMPLATE_DIR/.mini-speckit" "$TARGET_DIR/.mini-speckit"
+cp -R "$TEMPLATE_DIR/.mini-spec-kit" "$TARGET_DIR/.mini-spec-kit"
 cp "$TEMPLATE_DIR/.github/copilot-instructions.md" "$TARGET_DIR/.github/copilot-instructions.md"
 
-echo "mini-speckit initialized in: $TARGET_DIR"
-echo "Next: read .mini-speckit/project-constraints.md before editing code."
+echo "mini-spec-kit initialized in: $TARGET_DIR"
+echo "Next: read .mini-spec-kit/project-constraints.md before editing code."
