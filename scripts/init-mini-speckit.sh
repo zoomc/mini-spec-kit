@@ -19,5 +19,21 @@ mkdir -p "$TARGET_DIR/.github"
 cp -R "$TEMPLATE_DIR/.mini-spec-kit" "$TARGET_DIR/.mini-spec-kit"
 cp "$TEMPLATE_DIR/.github/copilot-instructions.md" "$TARGET_DIR/.github/copilot-instructions.md"
 
+# Generate CLAUDE.md from template (project name from directory basename)
+PROJECT_NAME="$(basename "$TARGET_DIR")"
+if [ ! -f "$TARGET_DIR/CLAUDE.md" ]; then
+  sed "s/{{PROJECT_NAME}}/$PROJECT_NAME/g" "$TEMPLATE_DIR/templates/CLAUDE.md" > "$TARGET_DIR/CLAUDE.md"
+  echo "Created CLAUDE.md with project name: $PROJECT_NAME"
+else
+  echo "CLAUDE.md already exists, skipping."
+fi
+
+# Copy Claude slash commands
+if [ -d "$TEMPLATE_DIR/.claude/commands" ]; then
+  mkdir -p "$TARGET_DIR/.claude/commands"
+  cp "$TEMPLATE_DIR/.claude/commands/"*.md "$TARGET_DIR/.claude/commands/"
+  echo "Copied Claude slash commands to .claude/commands/"
+fi
+
 echo "mini-spec-kit initialized in: $TARGET_DIR"
 echo "Next: read .mini-spec-kit/project-constraints.md before editing code."
