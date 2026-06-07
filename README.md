@@ -56,22 +56,33 @@ flowchart LR
     R -->|Gate Pass| D[Done ✅]
 ```
 
+## How It Works
+
 ```text
-Specify → Plan → Checklist → Analyze → Implement → Reconcile
+Specify → Plan → Write Checklist → Analyze → Implement → Reconcile
 ```
 
-Any task that produces a `git diff` must pass all six phases. Tiny tasks can use tiny artifacts — **not skipped discipline**.
+Each phase produces artifacts that the next phase requires. **Any git-diff-producing task must run all six phases.** Tiny tasks can keep artifacts short, but they do not skip the workflow.
+
+| Phase | What Happens | Output |
+|-------|--------------|--------|
+| **Specify** | Define requirements with traceable IDs | `spec.md` |
+| **Plan** | Break down into tasks with dependencies | `plan.md` |
+| **Checklist** | Create verification commands | `checklist.md` |
+| **Analyze** | Read-only consistency check | Analysis report |
+| **Implement** | Write code according to plan | Working code |
+| **Reconcile** | Verify and update specs | Updated docs |
 
 ## Anti-Skip Gates
 
 Physical file checks prevent phase skipping:
 
-```text
+```
 spec.md has ## Requirements? → Proceed to Plan
 plan.md has ## Task List? → Proceed to Checklist
-checklist.md exists + has verification items? → Proceed to Analyze
-Analysis passed + checklist [ ] only + gate allows Implement? → Proceed to Implement
-Build/test passes + git diff exists? → Proceed to Reconcile
+checklist.md exists and has verification items? → Proceed to Analyze
+Analysis Report passed, checklist has [ ] and no [x], gate allows Implement? → Proceed to Implement
+Build/test passes and git diff exists? → Proceed to Reconcile
 All [x], spec matches code, logs updated, final gate passes? → Done
 ```
 
@@ -82,22 +93,38 @@ Use the hard gate script when available:
 ./scripts/minispec-gate.sh --phase final --module <module> --project-root .
 ```
 
-**Complete means the final gate passes.** A module is not complete merely because `spec.md`, `plan.md`, and `checklist.md` exist.
-
-Compatibility checker remains available:
+**Complete means the final gate passes.** A module is not complete merely because `spec.md`, `plan.md`, and `checklist.md` exist; it is complete only after Reconcile verifies the checklist, updates logs/changelog, and this command exits 0:
 
 ```bash
-./scripts/check-phase-prereqs.sh --phase 5 --module <module> --project-root .
+./scripts/minispec-gate.sh --phase final --module <module> --project-root .
 ```
 
-Both scripts inspect `.mini-spec-kit/modules/<module>`.
+## Directory Structure
 
-## Gate Files
-
-- `gate.md`: workflow status + implementation permission
-- `checklist.md`: business verification checklist
-- `verify.log`: verification command results
-- `gate-history.log`: lightweight gate transitions
+```text
+mini-spec-kit/
+├── .mini-spec-kit/              # Core spec definitions (copied to target project)
+│   ├── project-constraints.md   # Single source of truth: 6-phase rules + gates
+│   ├── project-spec.md          # Project goals + module relationships
+│   └── modules/<module>/        # Per-module artifacts
+├── shared/                      # Shared snippets (single source, generated into targets)
+│   ├── coding-principles.md     # Karpathy 4 rules (one copy)
+│   └── workflow-overview.md     # 6-phase overview (one copy)
+├── commands/                    # Command source (one copy, generates to 3 agents)
+│   ├── specify.md
+│   ├── plan.md
+│   ├── checklist.md
+│   ├── analyze.md
+│   ├── implement.md
+│   └── reconcile.md
+├── scripts/
+│   ├── init-mini-speckit.sh     # Init: generates from single source to CC/Codex/Copilot
+│   └── minispec-gate.sh         # Hard gate enforcement
+├── templates/                   # Reference templates (now generated from shared/)
+│   ├── CLAUDE.md
+│   └── AGENTS.md
+└── README.md
+```
 
 ## Quick Start
 
@@ -107,20 +134,32 @@ cd mini-spec-kit
 ./scripts/init-mini-speckit.sh /path/to/your/project
 ```
 
-This copies `.mini-spec-kit/`, `.github/copilot-instructions.md`, `.claude/commands/`, `.agents/skills/`, `AGENTS.md`, `CLAUDE.md`, and gate scripts in `scripts/` into your project.
+This generates:
+- `.mini-spec-kit/` — core spec definitions
+- `.claude/commands/*.md` — Claude Code slash commands
+- `.agents/skills/speckit-*/SKILL.md` — Codex skills
+- `.github/agents/speckit.*.agent.md` — Copilot agents
+- `CLAUDE.md` + `AGENTS.md` — agent context files
+- `.github/copilot-instructions.md` — Copilot instructions
+- `scripts/minispec-gate.sh` — hard gate script
+- `speckit.manifest.json` — file tracking manifest
+
+Your AI agent reads the constraints and follows the workflow.
+
+The bundled `example-module` is a pre-implementation open example. It demonstrates artifact shape and intentionally does not pass the final gate.
 
 ## Who Is This For?
 
-- **Solo devs with AI copilots** who want fewer rewrites and cleaner delivery
-- **Small teams** that need accountability without enterprise overhead
-- **AI agents** that perform better with explicit constraints and structure
+- **Solo developers** using AI agents — prevent scope creep and rework
+- **Small teams** — create documentation trails without overhead
+- **AI agents** — structured workflow to follow
 
-## mini-spec-kit vs. Official Spec Kit
+## vs. Official Spec Kit
 
 | | mini-spec-kit | Official Spec Kit |
 |-|---------------|-------------------|
 | **Setup** | Copy one folder | Full CLI + templates |
-| **Learning curve** | ~5 minutes | Hours |
+| **Learning curve** | 5 minutes | Hours |
 | **Token overhead** | Minimal | Higher |
 | **Best for** | Individuals, small teams | Enterprise, large teams |
 
